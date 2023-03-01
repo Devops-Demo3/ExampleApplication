@@ -20,14 +20,13 @@ workflows:
 # Define the jobs we want to run for this project
 jobs:
   build:
-    working_directory: ~/example_application
+    working_directory: ~/ExampleApplication
     docker:
-      - image: circleci/node:12.22.9
+      - image: circleci/node:latest
     steps:
       - checkout
       - run:
-          name: update-npm
-          # command: 'sudo npm install -g npm@8.1.4'
+          name: update-npm         
           command: 'sudo npm install -g npm@5'
       - restore_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
@@ -41,7 +40,7 @@ jobs:
 
   deploy:
     docker:
-      - image: circle/node:12.22.9
+      - image: circle/node:latest
     steps:
       - run:
           name: deploy-application
