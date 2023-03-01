@@ -40,7 +40,7 @@ jobs:
 
   deploy:
     docker:
-      - image: circle/node:latest
+      - image: circle/node:10.16.3
     steps:
       - run:
           name: deploy-application
