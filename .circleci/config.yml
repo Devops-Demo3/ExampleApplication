@@ -20,15 +20,15 @@ workflows:
 # Define the jobs we want to run for this project
 jobs:
   build:
-    working_directory: ~/ExampleApplication
+    working_directory: ~/example_application
     docker:
-      - image: circleci/node:latest
+      - image: circleci/node:12.22.9
     steps:
       - checkout
       - run:
           name: update-npm
-          command: 'sudo npm install -g npm@8.1.4'
-          # command: 'sudo npm install -g npm@5'
+          # command: 'sudo npm install -g npm@8.1.4'
+          command: 'sudo npm install -g npm@5'
       - restore_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
       - run:
@@ -41,8 +41,8 @@ jobs:
 
   deploy:
     docker:
-      - image: circle/node:latest
+      - image: circle/node:12.22.9
     steps:
       - run:
           name: deploy-application
-          command: ssh -o StricktHostKeyChecking=no $EC2_MARIUSZTEST@EC2_PUBLIC_DNS "rm -rf ExampleApplication/; git clone https://github.com/Devops-Demo3/ExampleApplication.git; source ExampleApplication/deploy.sh"
+          command: ssh -o StrictHostKeyChecking=no $EC2_MARIUSZTEST@EC2_PUBLIC_DNS "rm -rf ExampleApplication/; git clone https://github.com/Devops-Demo3/ExampleApplication.git; source ExampleApplication/deploy.sh"
