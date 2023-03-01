@@ -5,27 +5,43 @@ workflows:
   build:
     jobs:
       - build:
-        filters:
-        - branches:
-            only:
-              - main
+          filters:
+            branches:
+              only:
+                - main
+      - deploy:
+          filters:
+            branches:
+              only:
+                - main
+          requires:
+            - build
 
+# Define the jobs we want to run for this project
 jobs:
   build:
     working_directory: ~/ExampleApplication
     docker:
-      - image: circleci/node:10.16.3
+      - image: circleci/node:latest
     steps:
       - checkout
       - run:
           name: update-npm
-          command: 'sudo npm install -g npm@5'
+          command: 'sudo npm install -g npm@8.1.4'
       - restore_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
       - run:
-          name: install-npm
+          name: install-npm-wee
           command: npm install
       - save_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
           paths:
             - ./node_modules
+
+  deploy:
+    docker:
+      - image: circle/node:latest
+    steps:
+      - run:
+          name: deploy-application
+          command: ssh -o StricktHostKeyChecking=no $EC2_MARIUSZTEST@EC2_PUBLIC_DNS "rm -rf ExampleApplication/;git clone https://github.com/Devops-Demo3/ExampleApplication.git; source ExampleApplication/deploy.sh"
