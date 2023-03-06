@@ -12,7 +12,7 @@
     <a href="/math/multiply">multiply</a>
     <a href="/math/subtract">subtract</a>
     <h1><%= title %></h1>
-    <p>Welcome to the calculator application - v.2.0</p>
+    <p>Welcome to the calculator application - v.3.0</p>
     <!-- <p>Welcome to <%= title %></p> -->
     <form action="<%= title %>" method="get">
       <input type="number" name="num1" /> <%= symbol %> 
@@ -23,7 +23,6 @@
     <%if (result || (typeof result === 'number' && !isNaN(result))) { %>
       <%= num1 %> <%= symbol %> <%= num2 %> = <%= result %>
     <% } %>
-    
     
   </body>
 </html>
